@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yolei WebApp - Hello World</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Yolei WebApp</h1>
+            <p>Your self-hosted web application on Raspberry Pi 5</p>
+        </header>
+
+        <main>
+            <section class="hero">
+                <h2>Hello World!</h2>
+                <p>Welcome to your first web application with data storage.</p>
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>Total Visits</h3>
+                        <span class="stat-number" id="totalVisits"><%= totalVisits %></span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Unique Visitors</h3>
+                        <span class="stat-number" id="uniqueVisitors">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>📊 Data Storage</h3>
+                        <p>SQLite database tracks all visits</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🖥️ Self-Hosted</h3>
+                        <p>Runs on your Raspberry Pi 5</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🌐 Internet Access</h3>
+                        <p>Exposed via Tailscale Funnel</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⚡ Fast & Lightweight</h3>
+                        <p>Built with Node.js & Express</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recent-visits">
+                <h2>Recent Activity</h2>
+                <button id="refreshBtn" onclick="loadRecentVisits()">Refresh Data</button>
+                <div id="visitsList" class="visits-container">
+                    <p>Loading recent visits...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with ❤️ using Node.js, Express, and SQLite</p>
+            <p><a href="/health">Health Check</a> | <a href="/api/stats">API Stats</a></p>
+        </footer>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
