@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yolei de miel 🍯</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍯</text></svg>">
+    <link rel="stylesheet" href="/leaflet/leaflet.css">
     <link rel="stylesheet" href="/styles.css">
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .map-container {
+            position: relative;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -12,6 +25,13 @@
             <h1> Yolei de miel </h1>
             <p> 🍯 La más hermosa del lugar 🍯 </p>
         </header>
+
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
     </div>
+
+    <script src="/leaflet/leaflet.js"></script>
+    <script src="/app.js"></script>
 </body>
 </html>
