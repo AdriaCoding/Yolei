@@ -3,6 +3,7 @@ class GeoAnnotationApp {
     constructor() {
         this.map = null;
         this.markers = [];
+        this.cities = [];
         this.locations = [];
 
         this.init();
@@ -10,6 +11,7 @@ class GeoAnnotationApp {
 
     async init() {
         await this.initializeMap();
+        await this.loadCities();
         await this.loadLocations();
     }
 
@@ -22,6 +24,15 @@ class GeoAnnotationApp {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(this.map);
+    }
+
+    async loadCities() {
+        try {
+            const response = await fetch('/api/cities');
+            this.cities = await response.json();
+        } catch (error) {
+            console.error('Error loading cities:', error);
+        }
     }
 
     async loadLocations() {
@@ -40,9 +51,37 @@ class GeoAnnotationApp {
         this.markers.forEach(marker => this.map.removeLayer(marker));
         this.markers = [];
 
-        // Add markers for locations
+        // Add circle markers for cities (blue)
+        this.cities.forEach(city => {
+            if (city.latitude && city.longitude) {
+                const cityMarker = L.circleMarker([city.latitude, city.longitude], {
+                    color: '#007bff',
+                    fillColor: '#007bff',
+                    fillOpacity: 0.3,
+                    radius: 12,
+                    weight: 2
+                })
+                .addTo(this.map)
+                .bindPopup(`
+                    <strong>🏙️ ${city.name}</strong><br>
+                    <em>Country: ${city.country || 'Unknown'}</em><br>
+                    <em>Population: ${city.population ? city.population.toLocaleString() : 'Unknown'}</em><br>
+                    <small style="color: #666;">📍 Click to zoom into city</small>
+                `)
+                .on('click', () => {
+                    // Zoom into the city with smooth animation
+                    this.map.flyTo([city.latitude, city.longitude], 13, {
+                        duration: 1.5 // Animation duration in seconds
+                    });
+                });
+
+                this.markers.push(cityMarker);
+            }
+        });
+
+        // Add markers for locations (default Leaflet style)
         this.locations.forEach(location => {
-            const marker = L.marker([location.latitude, location.longitude])
+            const locationMarker = L.marker([location.latitude, location.longitude])
                 .addTo(this.map)
                 .bindPopup(`
                     <strong>${location.name}</strong><br>
@@ -51,7 +90,7 @@ class GeoAnnotationApp {
                     <em>City: ${location.city_name || 'Unknown'}</em>
                 `);
 
-            this.markers.push(marker);
+            this.markers.push(locationMarker);
         });
     }
 }
